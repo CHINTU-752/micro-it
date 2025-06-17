@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Interactive Quiz Game</title>
+  <title>Professional Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
   <style>
     /* Reset and base */
@@ -12,602 +13,324 @@
     }
     body {
       margin: 0;
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      color: #f0f4f8;
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #283e51 0%, #485563 100%);
-      color: #f0f0f0;
+      line-height: 1.6;
       min-height: 100vh;
       display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 24px 16px;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+      flex-direction: column;
+      overflow-x: hidden;
     }
-    h1, h2, h3, h4 {
-      margin: 0;
-      line-height: 1.2;
-      font-weight: 700;
+    a {
+      color: #4ade80;
+      text-decoration: none;
+    }
+    a:hover,
+    a:focus {
+      text-decoration: underline;
+      outline: none;
     }
 
     /* Container */
-    #app {
-      background: rgba(30, 40, 55, 0.9);
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 16px 64px;
+    }
+
+    /* Header */
+    header {
+      background: rgba(15, 32, 64, 0.95);
+      padding: 24px 16px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.7);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-weight: 800;
+      font-size: 1.8rem;
+      color: #4ade80;
+      user-select: none;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 32px;
+      margin: 0;
+      padding: 0;
+    }
+    nav ul li {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+    nav ul li a {
+      color: #f0f4f8;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      padding: 8px 0;
+      display: inline-block;
+      border-bottom: 3px solid transparent;
+      transition: border-color 0.3s ease;
+    }
+    nav ul li a:hover,
+    nav ul li a:focus {
+      border-color: #4ade80;
+      outline: none;
+    }
+
+    /* Hero / About Me */
+    section#about {
+      padding: 64px 0 48px;
+      background: rgba(15, 32, 64, 0.6);
       border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-      width: 100%;
-      max-width: 600px;
-      max-height: 90vh;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      user-select:none;
-    }
-
-    /* Common layout */
-    .screen {
-      padding: 32px;
-      flex: 1;
-      display: none;
-      flex-direction: column;
-      justify-content: center;
-    }
-    .screen.active {
-      display: flex;
-    }
-
-    /* Welcome Screen */
-    #welcome h1 {
-      font-size: 2.5rem;
+      box-shadow: 0 0 30px #4ade8044;
+      margin-top: 32px;
       text-align: center;
-      margin-bottom: 24px;
-      background: linear-gradient(135deg, #42a5f5, #00acc1);
+    }
+    section#about h1 {
+      font-size: 2.75rem;
+      font-weight: 800;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #4ade80, #22c55e);
       background-clip: text;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-    #welcome p {
-      font-size: 1.1rem;
+    section#about p {
+      max-width: 700px;
+      margin: 0 auto;
+      font-size: 1.15rem;
+      color: #d1fae5;
+    }
+
+    /* Projects Section */
+    section#projects {
+      margin-top: 64px;
+    }
+    section#projects h2 {
+      font-size: 2.4rem;
+      font-weight: 700;
       margin-bottom: 32px;
       text-align: center;
-      color: #b0cfe5;
+      background: linear-gradient(135deg, #4ade80, #22c55e);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
-    button.primary-btn {
-      background: linear-gradient(135deg, #42a5f5, #00acc1);
-      border: none;
-      border-radius: 12px;
-      color: white;
-      font-size: 1.25rem;
-      font-weight: 700;
-      padding: 16px 32px;
-      cursor: pointer;
-      transition: box-shadow 0.3s ease, transform 0.2s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      user-select:none;
+    .project-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
     }
-    button.primary-btn:hover,
-    button.primary-btn:focus {
-      outline: none;
-      box-shadow: 0 0 20px #00acc1aa;
-      transform: translateY(-2px);
-    }
-    button.primary-btn:focus-visible {
-      outline: 3px solid #00acc1cc;
-      outline-offset: 2px;
-    }
-
-    /* Quiz Screen */
-    #quiz header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
-    }
-    #quiz header h2 {
-      font-size: 1.5rem;
-      color: #42a5f5;
-    }
-    #quiz header .timer {
-      background: rgba(255 255 255 / 0.15);
-      padding: 8px 16px;
-      border-radius: 10px;
-      font-weight: 600;
-      font-family: monospace;
-      color: #a0d8ff;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    #quiz .question {
-      font-size: 1.6rem;
-      color: #e0e7f4;
-      margin-bottom: 24px;
-      min-height: 72px;
-      user-select:text;
-    }
-
-    /* Answers */
-    .answers {
+    .project-card {
+      background: rgba(30, 60, 90, 0.85);
+      border-radius: 16px;
+      padding: 24px 20px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.5);
       display: flex;
       flex-direction: column;
-      gap: 16px;
-      margin-bottom: 32px;
-    }
-    button.answer-btn {
-      background: rgba(255 255 255 / 0.10);
-      border: 2px solid transparent;
-      border-radius: 14px;
-      padding: 14px 20px;
-      font-size: 1.1rem;
-      color: #c8d5e4;
-      cursor: pointer;
-      text-align: left;
-      transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.4s ease;
-      user-select:none;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-    button.answer-btn:hover,
-    button.answer-btn:focus {
-      background: rgba(0, 172, 193, 0.3);
-      border-color: #00acc1;
-      outline: none;
-      box-shadow: 0 0 10px #00acc1dd;
-      color: #fff;
-    }
-    button.answer-btn:focus-visible {
-      outline: 3px solid #00acc1cc;
-      outline-offset: 2px;
-    }
-    button.answer-btn.selected {
-      background: #007c91;
-      border-color: #00acc1;
-      color: #e0f7fa;
-      cursor: default;
-      box-shadow: 0 0 12px #00acc1cc;
-    }
-    button.answer-btn.correct {
-      background: #15803d;
-      border-color: #22c55e;
-      color: #d1fae5;
-      cursor: default;
-      box-shadow: 0 0 12px #22c55ecc;
-    }
-    button.answer-btn.incorrect {
-      background: #b91c1c;
-      border-color: #ef4444;
-      color: #fee2e2;
-      cursor: default;
-      opacity: 0.85;
-      box-shadow: none;
-    }
-
-    /* Navigation bottom bar */
-    #quiz footer {
-      display: flex;
       justify-content: space-between;
-      align-items: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-    button.nav-btn {
-      background: transparent;
-      border: 2px solid #42a5f5;
-      border-radius: 12px;
-      padding: 10px 24px;
+    .project-card:hover,
+    .project-card:focus-within {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 30px rgba(74, 222, 128, 0.7);
+      outline: none;
+    }
+    .project-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #4ade80;
+      margin-bottom: 12px;
+      user-select:none;
+    }
+    .project-description {
+      color: #c7e9cb;
+      flex-grow: 1;
+      margin-bottom: 20px;
       font-size: 1rem;
-      color: #42a5f5;
-      cursor: pointer;
-      display: flex;
+      user-select:text;
+    }
+    .project-links a {
+      margin-right: 16px;
+      font-weight: 600;
+      font-size: 0.925rem;
+      color: #86efac;
+      display: inline-flex;
       align-items: center;
       gap: 6px;
-      transition: background-color 0.3s ease, color 0.3s ease;
       user-select:none;
     }
-    button.nav-btn:hover:not(:disabled),
-    button.nav-btn:focus:not(:disabled) {
-      background: #42a5f5;
-      color: white;
+    .project-links a:hover,
+    .project-links a:focus {
+      text-decoration: underline;
       outline: none;
     }
-    button.nav-btn:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
+
+    /* Contact Section */
+    section#contact {
+      margin-top: 64px;
+      padding-bottom: 48px;
+      text-align: center;
     }
-    button.nav-btn:focus-visible {
-      outline: 3px solid #00acc1cc;
-      outline-offset: 2px;
+    section#contact h2 {
+      font-size: 2.4rem;
+      font-weight: 700;
+      margin-bottom: 24px;
+      background: linear-gradient(135deg, #4ade80, #22c55e);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .contact-info {
+      font-size: 1.1rem;
+      color: #b5e7a0;
+      line-height: 1.5;
+    }
+    .contact-info a {
+      color: #bbf7d0;
+      font-weight: 700;
+    }
+    .contact-info a:hover,
+    .contact-info a:focus {
+      text-decoration: underline;
+      outline: none;
     }
 
-    /* Result Screen */
-    #result {
+    /* Footer */
+    footer {
+      margin-top: auto;
+      padding: 24px 16px;
+      background: rgba(15, 32, 64, 0.8);
       text-align: center;
-      padding: 32px;
+      font-size: 0.9rem;
+      color: #84cc16;
+      user-select:none;
     }
-    #result h2 {
-      font-size: 2rem;
-      margin-bottom: 24px;
-      color: #42a5f5;
-    }
-    #result p.score {
-      font-size: 1.6rem;
-      margin-bottom: 40px;
-      color: #e0e7f4;
-    }
-    button.primary-btn.restart-btn {
-      max-width: 320px;
-      margin: 0 auto;
-    }
+
+    /* Material Icons Button */
+    .material-icons.md-18 { font-size: 18px; vertical-align: bottom; }
 
     /* Responsive */
-    @media (max-width: 480px) {
-      #app {
-        max-width: 100%;
-        border-radius: 12px;
-        padding: 0 8px;
+    @media (max-width: 640px) {
+      nav ul {
+        gap: 16px;
       }
-      #quiz .question {
-        font-size: 1.3rem;
-        min-height: 60px;
+      section#about h1 {
+        font-size: 2rem;
       }
-      button.answer-btn {
-        font-size: 1rem;
-        padding: 12px 16px;
+      section#projects h2, section#contact h2 {
+        font-size: 2rem;
       }
-      button.primary-btn, button.nav-btn {
-        font-size: 1rem;
-        padding: 12px 20px;
-      }
-      #quiz footer {
-        flex-direction: column;
-        gap: 12px;
-      }
-    }
-
-    /* Accessibility - focus visible outline */
-    :focus-visible {
-      outline-offset: 2px;
     }
   </style>
 </head>
 <body>
-  <main id="app" role="main" aria-live="polite">
-    <!-- Welcome Screen -->
-    <section id="welcome" class="screen active" aria-label="Welcome screen to start quiz">
-      <h1 tabindex="0">Interactive Quiz Game</h1>
-      <p tabindex="0">Test your knowledge with a fun and challenging multiple-choice quiz. Try to get all answers correct!</p>
-      <button class="primary-btn" id="startBtn" aria-label="Start Quiz">
-        <span class="material-icons" aria-hidden="true">play_arrow</span>
-        Start Quiz
-      </button>
+  <header role="banner">
+    <div class="container" style="display:flex; justify-content:space-between; align-items:center;">
+      <div class="logo" tabindex="0">YourName</div>
+      <nav aria-label="Primary navigation">
+        <ul>
+          <li><a href="#about" tabindex="0">About Me</a></li>
+          <li><a href="#projects" tabindex="0">Projects</a></li>
+          <li><a href="#contact" tabindex="0">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" role="main">
+    <!-- About Me -->
+    <section id="about" tabindex="-1" aria-label="About Me section">
+      <h1>About Me</h1>
+      <p>
+        Hello! I’m a passionate software developer with expertise in building modern web and mobile applications.
+        I enjoy solving complex problems and delivering great user experiences through clean, efficient code
+        and creative design. My background includes working with JavaScript frameworks, backend APIs, and
+        scalable cloud solutions.
+      </p>
     </section>
 
-    <!-- Quiz Screen -->
-    <section id="quiz" class="screen" aria-live="polite" aria-atomic="true">
-      <header>
-        <h2 id="categoryLabel" tabindex="0">Category</h2>
-        <div class="timer" aria-live="off" aria-label="Countdown timer">
-          <span class="material-icons" aria-hidden="true">timer</span>
-          <span id="timerValue">00:30</span>
-        </div>
-      </header>
-      <article>
-        <p id="questionText" class="question" tabindex="0">Question text</p>
-        <div class="answers" role="list" id="answersList"></div>
-      </article>
-      <footer>
-        <button class="nav-btn" id="prevBtn" aria-label="Previous question" disabled>
-          <span class="material-icons" aria-hidden="true">chevron_left</span>
-          Previous
-        </button>
-        <button class="nav-btn" id="nextBtn" aria-label="Next question" disabled>
-          Next
-          <span class="material-icons" aria-hidden="true">chevron_right</span>
-        </button>
-      </footer>
+    <!-- Projects -->
+    <section id="projects" tabindex="-1" aria-label="Projects section">
+      <h2>Projects</h2>
+      <div class="project-list">
+        <article class="project-card" tabindex="0" aria-labelledby="project1-title" aria-describedby="project1-desc">
+          <h3 id="project1-title" class="project-title">Portfolio Website</h3>
+          <p id="project1-desc" class="project-description">
+            A fully responsive and accessible personal portfolio website showcasing my skills, projects, and contact information.
+          </p>
+          <div class="project-links">
+            <a href="https://github.com/yourusername/portfolio" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository for Portfolio Website">
+              <span class="material-icons md-18" aria-hidden="true">code</span>Code
+            </a>
+            <a href="https://yourportfolio.example.com" target="_blank" rel="noopener noreferrer" aria-label="Live demo of Portfolio Website">
+              <span class="material-icons md-18" aria-hidden="true">launch</span>Live
+            </a>
+          </div>
+        </article>
+
+        <article class="project-card" tabindex="0" aria-labelledby="project2-title" aria-describedby="project2-desc">
+          <h3 id="project2-title" class="project-title">Task Manager App</h3>
+          <p id="project2-desc" class="project-description">
+            A progressive web app that helps users manage their daily tasks efficiently with offline support and notifications.
+          </p>
+          <div class="project-links">
+            <a href="https://github.com/yourusername/task-manager" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository for Task Manager App">
+              <span class="material-icons md-18" aria-hidden="true">code</span>Code
+            </a>
+            <a href="https://taskmanager.example.com" target="_blank" rel="noopener noreferrer" aria-label="Live demo of Task Manager App">
+              <span class="material-icons md-18" aria-hidden="true">launch</span>Live
+            </a>
+          </div>
+        </article>
+
+        <article class="project-card" tabindex="0" aria-labelledby="project3-title" aria-describedby="project3-desc">
+          <h3 id="project3-title" class="project-title">Blog Platform</h3>
+          <p id="project3-desc" class="project-description">
+            An open-source blogging platform with a minimalist design, real-time content updates, and markdown support.
+          </p>
+          <div class="project-links">
+            <a href="https://github.com/yourusername/blog-platform" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository for Blog Platform">
+              <span class="material-icons md-18" aria-hidden="true">code</span>Code
+            </a>
+            <a href="https://blogplatform.example.com" target="_blank" rel="noopener noreferrer" aria-label="Live demo of Blog Platform">
+              <span class="material-icons md-18" aria-hidden="true">launch</span>Live
+            </a>
+          </div>
+        </article>
+      </div>
     </section>
 
-    <!-- Result Screen -->
-    <section id="result" class="screen" aria-label="Quiz results screen">
-      <h2 tabindex="0">Quiz Completed!</h2>
-      <p class="score" tabindex="0" id="scoreText">Your score: 0 / 0</p>
-      <button class="primary-btn restart-btn" id="restartBtn" aria-label="Restart Quiz">
-        <span class="material-icons" aria-hidden="true">replay</span>
-        Restart Quiz
-      </button>
+    <!-- Contact -->
+    <section id="contact" tabindex="-1" aria-label="Contact section">
+      <h2>Contact</h2>
+      <p class="contact-info">
+        I’m open to freelance work or full-time positions. Feel free to reach out by <a href="mailto:youremail@example.com" aria-label="Send me an email">email</a> or connect with me on social media:
+      </p>
+      <p class="contact-info" style="margin-top: 16px;">
+        <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile">
+          <span class="material-icons md-18" aria-hidden="true">linkedin</span> LinkedIn
+        </a> |
+        <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile">
+          <span class="material-icons md-18" aria-hidden="true">code</span> GitHub
+        </a> |
+        <a href="https://twitter.com/yourhandle" target="_blank" rel="noopener noreferrer" aria-label="Twitter profile">
+          <span class="material-icons md-18" aria-hidden="true">twitter</span> Twitter
+        </a>
+      </p>
     </section>
   </main>
 
-  <script>
-    (() => {
-      'use strict';
-
-      const startBtn = document.getElementById('startBtn');
-      const quizScreen = document.getElementById('quiz');
-      const resultScreen = document.getElementById('result');
-      const welcomeScreen = document.getElementById('welcome');
-      const categoryLabel = document.getElementById('categoryLabel');
-      const questionText = document.getElementById('questionText');
-      const answersList = document.getElementById('answersList');
-      const prevBtn = document.getElementById('prevBtn');
-      const nextBtn = document.getElementById('nextBtn');
-      const timerValue = document.getElementById('timerValue');
-      const scoreText = document.getElementById('scoreText');
-      const restartBtn = document.getElementById('restartBtn');
-
-      // Quiz Data Sample (category, question, options, correctIndex)
-      const quizData = [
-        {
-          category: "Science",
-          questions: [
-            {
-              question: "What is the chemical symbol for Gold?",
-              answers: ["Au", "Ag", "O", "Gd"],
-              correctIndex: 0
-            },
-            {
-              question: "What planet is known as the Red Planet?",
-              answers: ["Venus", "Mars", "Jupiter", "Saturn"],
-              correctIndex: 1
-            },
-            {
-              question: "Which gas do plants absorb from the atmosphere?",
-              answers: ["Oxygen", "Carbon Dioxide", "Nitrogen", "Hydrogen"],
-              correctIndex: 1
-            }
-          ]
-        },
-        {
-          category: "History",
-          questions: [
-            {
-              question: "Who was the first President of the United States?",
-              answers: ["Thomas Jefferson", "Abraham Lincoln", "George Washington", "John Adams"],
-              correctIndex: 2
-            },
-            {
-              question: "In which year did World War II end?",
-              answers: ["1945", "1939", "1918", "1963"],
-              correctIndex: 0
-            }
-          ]
-        },
-        {
-          category: "General Knowledge",
-          questions: [
-            {
-              question: "Which ocean is the largest?",
-              answers: ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean"],
-              correctIndex: 3
-            },
-            {
-              question: "How many continents are there on Earth?",
-              answers: ["5", "6", "7", "8"],
-              correctIndex: 2
-            },
-            {
-              question: "Which country is known as the Land of the Rising Sun?",
-              answers: ["China", "South Korea", "Japan", "Thailand"],
-              correctIndex: 2
-            }
-          ]
-        }
-      ];
-
-      // Flatten questions across all categories with category reference
-      const flattenedQuestions = [];
-      quizData.forEach(categoryObj => {
-        categoryObj.questions.forEach(q => {
-          flattenedQuestions.push({
-            category: categoryObj.category,
-            question: q.question,
-            answers: q.answers,
-            correctIndex: q.correctIndex
-          });
-        });
-      });
-
-      // Timer configuration
-      const QUESTION_TIME_SECONDS = 30;
-      let timerInterval = null;
-
-      // State variables
-      let currentQuestionIndex = 0;
-      let selectedAnswers = new Array(flattenedQuestions.length).fill(null);
-      let score = 0;
-      let timeLeft = QUESTION_TIME_SECONDS;
-      let answered = false;
-
-      function switchScreen(activeScreen) {
-        [welcomeScreen, quizScreen, resultScreen].forEach(screen => {
-          screen.classList.remove('active');
-        });
-        activeScreen.classList.add('active');
-      }
-
-      function startQuiz() {
-        currentQuestionIndex = 0;
-        selectedAnswers.fill(null);
-        score = 0;
-        answered = false;
-        timeLeft = QUESTION_TIME_SECONDS;
-        updateQuestion();
-        switchScreen(quizScreen);
-        startTimer();
-      }
-
-      function updateQuestion() {
-        answered = selectedAnswers[currentQuestionIndex] !== null;
-        const q = flattenedQuestions[currentQuestionIndex];
-        categoryLabel.textContent = q.category;
-        questionText.textContent = q.question;
-
-        // Clear old answers
-        answersList.innerHTML = '';
-
-        // Create answer buttons
-        q.answers.forEach((answer, index) => {
-          const btn = document.createElement('button');
-          btn.className = 'answer-btn';
-          btn.type = 'button';
-          btn.textContent = answer;
-          btn.setAttribute('role', 'listitem');
-          btn.setAttribute('tabindex', '0');
-          btn.dataset.index = index;
-
-          if (answered) {
-            // Disable all buttons after answering
-            btn.disabled = true;
-            const selected = selectedAnswers[currentQuestionIndex];
-            if (index === q.correctIndex) {
-              btn.classList.add('correct');
-            }
-            if (index === selected) {
-              btn.classList.add(index === q.correctIndex ? 'correct' : 'incorrect');
-            }
-          } else {
-            btn.addEventListener('click', () => {
-              selectAnswer(index);
-            });
-          }
-
-          if (selectedAnswers[currentQuestionIndex] === index) {
-            btn.classList.add('selected');
-          }
-
-          answersList.appendChild(btn);
-        });
-
-        updateNavigationButtons();
-        updateTimerDisplay();
-        questionText.focus();
-      }
-
-      function selectAnswer(answerIndex) {
-        if (answered) return;
-        answered = true;
-        selectedAnswers[currentQuestionIndex] = answerIndex;
-        if (answerIndex === flattenedQuestions[currentQuestionIndex].correctIndex) {
-          score++;
-        }
-        clearInterval(timerInterval);
-        updateQuestion();
-        updateNavigationButtons(true);
-      }
-
-      function updateNavigationButtons(showNextIfAnswered = false) {
-        prevBtn.disabled = currentQuestionIndex === 0;
-        if (answered) {
-          nextBtn.disabled = false;
-          if (currentQuestionIndex === flattenedQuestions.length - 1) {
-            nextBtn.textContent = '';
-            const icon = document.createElement('span');
-            icon.className = 'material-icons';
-            icon.setAttribute('aria-hidden', 'true');
-            icon.textContent = 'check_circle';
-            nextBtn.appendChild(icon);
-            nextBtn.setAttribute('aria-label', 'Finish quiz and view results');
-          } else {
-            nextBtn.textContent = 'Next ';
-            const icon = document.createElement('span');
-            icon.className = 'material-icons';
-            icon.setAttribute('aria-hidden', 'true');
-            icon.textContent = 'chevron_right';
-            nextBtn.appendChild(icon);
-            nextBtn.setAttribute('aria-label', 'Next question');
-          }
-        } else {
-          nextBtn.disabled = true;
-          nextBtn.textContent = 'Next ';
-          const icon = document.createElement('span');
-          icon.className = 'material-icons';
-          icon.setAttribute('aria-hidden', 'true');
-          icon.textContent = 'chevron_right';
-          nextBtn.appendChild(icon);
-          nextBtn.setAttribute('aria-label', 'Next question disabled until answering current question');
-        }
-      }
-
-      function changeQuestion(next) {
-        if(next) {
-          if(currentQuestionIndex < flattenedQuestions.length - 1) {
-            currentQuestionIndex++;
-            timeLeft = QUESTION_TIME_SECONDS;
-            answered = selectedAnswers[currentQuestionIndex] !== null;
-            updateQuestion();
-            startTimer();
-          } else if (currentQuestionIndex === flattenedQuestions.length - 1 && answered) {
-            finishQuiz();
-          }
-        } else {
-          if(currentQuestionIndex > 0) {
-            currentQuestionIndex--;
-            timeLeft = QUESTION_TIME_SECONDS;
-            answered = selectedAnswers[currentQuestionIndex] !== null;
-            updateQuestion();
-            startTimer();
-          }
-        }
-      }
-
-      function finishQuiz() {
-        clearInterval(timerInterval);
-        switchScreen(resultScreen);
-        scoreText.textContent = `Your score: ${score} / ${flattenedQuestions.length}`;
-        restartBtn.focus();
-      }
-
-      function restartQuiz() {
-        switchScreen(welcomeScreen);
-        startBtn.focus();
-      }
-
-      function startTimer() {
-        clearInterval(timerInterval);
-        timeLeft = QUESTION_TIME_SECONDS;
-        updateTimerDisplay();
-
-        timerInterval = setInterval(() => {
-          if(timeLeft > 0) {
-            timeLeft--;
-            updateTimerDisplay();
-          } else {
-            clearInterval(timerInterval);
-            if(!answered) {
-              selectedAnswers[currentQuestionIndex] = null; // no selection
-              answered = true;
-              updateQuestion();
-              updateNavigationButtons(true);
-            }
-          }
-        }, 1000);
-      }
-
-      function updateTimerDisplay() {
-        let minutes = Math.floor(timeLeft / 60);
-        let seconds = timeLeft % 60;
-        timerValue.textContent = `${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
-      }
-
-      // Event Listeners
-      startBtn.addEventListener('click', startQuiz);
-      prevBtn.addEventListener('click', () => changeQuestion(false));
-      nextBtn.addEventListener('click', () => changeQuestion(true));
-      restartBtn.addEventListener('click', restartQuiz);
-
-      // Keyboard support: handle arrow keys on quiz screen
-      document.addEventListener('keydown', (e) => {
-        if (!quizScreen.classList.contains('active')) return;
-        if(e.key === 'ArrowRight') {
-          if(!nextBtn.disabled) nextBtn.click();
-        }
-        if(e.key === 'ArrowLeft') {
-          if(!prevBtn.disabled) prevBtn.click();
-        }
-      });
-    })();
-  </script>
+  <footer role="contentinfo">
+    &copy; 2024 YourName. All rights reserved.
+  </footer>
 </body>
 </html>
 
